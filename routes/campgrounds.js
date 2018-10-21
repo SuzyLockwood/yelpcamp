@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Campground = require('../models/campground');
+const middleware = require('../middleware');
 
 //INDEX - show all campgrounds
 router.get('/', function(req, res) {
@@ -17,7 +18,7 @@ router.get('/', function(req, res) {
 });
 
 //CREATE - add new campground to DB
-router.post('/', isLoggedIn, function(req, res) {
+router.post('/', middleware.isLoggedIn, function(req, res) {
   // get data from form and add to campgrounds array
   let name = req.body.name;
   let image = req.body.image;
@@ -43,7 +44,7 @@ router.post('/', isLoggedIn, function(req, res) {
 });
 
 //NEW - show form to create new campground
-router.get('/new', isLoggedIn, function(req, res) {
+router.get('/new', middleware.isLoggedIn, function(req, res) {
   res.render('campgrounds/new');
 });
 
@@ -62,12 +63,40 @@ router.get('/:id', function(req, res) {
     });
 });
 
-//middleware
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login');
-}
+//EDIT - get campground change form
+router.get('/:id/edit', middleware.checkCampgroundOwnership, function(
+  req,
+  res
+) {
+  Campground.findById(req.params.id, function(err, foundCampground) {
+    res.render('campgrounds/edit', { campground: foundCampground });
+  });
+});
+
+//UPDATE - post campground changes
+router.put('/:id', middleware.checkCampgroundOwnership, function(req, res) {
+  //find and update the correct campground
+  Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(
+    err,
+    updatedCampground
+  ) {
+    if (err) {
+      res.redirect('/campgrounds');
+    } else {
+      res.redirect('/campgrounds/' + req.params.id);
+    }
+  });
+});
+
+//DESTROY - delete campground
+router.delete('/:id', middleware.checkCampgroundOwnership, function(req, res) {
+  Campground.findByIdAndRemove(req.params.id, function(err) {
+    if (err) {
+      res.redirect('/campgrounds');
+    } else {
+      res.redirect('/campgrounds');
+    }
+  });
+});
 
 module.exports = router;
