@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Campground = require('../models/campground');
+const Comment = require('../models/comment');
+const Review = require('../models/review');
 const middleware = require('../middleware');
 
 //INDEX - show all campgrounds
@@ -55,6 +57,10 @@ router.get('/:id', function(req, res) {
   //find object with provided ID
   Campground.findById(req.params.id)
     .populate('comments')
+    .populate({
+      path: 'reviews',
+      options: { sort: { createdAt: -1 } }
+    })
     .exec(function(err, foundCampground) {
       //added error handling for edge case
       if (err || !foundCampground) {
@@ -94,12 +100,28 @@ router.put('/:id', middleware.checkCampgroundOwnership, function(req, res) {
 
 //DESTROY - delete campground
 router.delete('/:id', middleware.checkCampgroundOwnership, function(req, res) {
-  Campground.findByIdAndRemove(req.params.id, function(err) {
+  Campground.findById(req.params.id, function(err, campground) {
     if (err) {
       res.redirect('/campgrounds');
     } else {
-      req.flash('success', 'Campground successfully deleted.');
-      res.redirect('/campgrounds');
+      //deletes all comments associated with the campground
+      Comment.remove({ _id: { $in: campground.comments } }, function(err) {
+        if (err) {
+          console.log(err);
+          return res.redirect('/campgrounds');
+        }
+        //deletes all reviews associated with the campground
+        Review.remove({ _id: { $in: campground.reviews } }, function(err) {
+          if (err) {
+            console.log(err);
+            return res.redirect('/campgrounds');
+          }
+          //delete the campground
+          campground.remove();
+          req.flash('success', 'Campground has been successfully deleted.');
+          res.redirect('/campgrounds');
+        });
+      });
     }
   });
 });

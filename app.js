@@ -14,6 +14,7 @@ const seedDB = require('./seeds');
 
 //requiring routes
 const commentRoutes = require('./routes/comments');
+const reviewRoutes = require('./routes/reviews');
 const campgroundRoutes = require('./routes/campgrounds');
 const indexRoutes = require('./routes/index');
 
@@ -57,6 +58,7 @@ app.get('/', function(req, res) {
 app.use(indexRoutes);
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/comments', commentRoutes);
+app.use('/campgrounds/:id/reviews', reviewRoutes);
 
 app.listen(process.env.PORT || '3000', process.env.IP, function() {
   console.log('Yelpcamp!');

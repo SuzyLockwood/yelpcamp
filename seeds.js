@@ -4,22 +4,25 @@ const Comment = require('./models/comment');
 
 let data = [
   {
-    name: "Cloud's Rest",
+    name: 'Cloud Peak',
+    price: 5.95,
     image: 'https://farm4.staticflickr.com/3795/10131087094_c1c0a1c859.jpg',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+      'It is a restful home for clouds on top of a huge hill. I could stare at the clear sky all day near the lake.'
   },
   {
     name: 'Desert Mesa',
+    price: 10.95,
     image: 'https://farm6.staticflickr.com/5487/11519019346_f66401b6c1.jpg',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+      'So quiet and serene.  You will not find a better place to relax.'
   },
   {
     name: 'Canyon Floor',
+    price: 12.55,
     image: 'https://farm1.staticflickr.com/189/493046463_841a18169e.jpg',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+      'The sunsets are beautiful here. Come out and enjoy the gorgeous scenery.'
   }
 ];
 
